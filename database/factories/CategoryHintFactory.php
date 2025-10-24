@@ -20,7 +20,7 @@ class CategoryHintFactory extends Factory
         return [
             'category_id' => Category::factory(),
             'text' => $this->faker->sentence(),
-            'type' => $this->faker->randomElement(['positive', 'negative']),
+            'hint_type' => $this->faker->randomElement(['positive', 'negative']),
         ];
     }
 }

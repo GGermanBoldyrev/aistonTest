@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->text('text');
-            $table->enum('type', ['positive', 'negative'])->default('positive');
+            $table->enum('hint_type', ['positive', 'negative'])->default('positive');
             $table->timestamps();
         });
     }

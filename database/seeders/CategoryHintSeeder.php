@@ -56,7 +56,7 @@ class CategoryHintSeeder extends Seeder
                 CategoryHint::create([
                     'category_id' => $categoryId,
                     'text' => $text,
-                    'type' => 'positive',
+                    'hint_type' => 'positive',
                 ]);
             }
 
@@ -64,7 +64,7 @@ class CategoryHintSeeder extends Seeder
                 CategoryHint::create([
                     'category_id' => $categoryId,
                     'text' => $text,
-                    'type' => 'negative',
+                    'hint_type' => 'negative',
                 ]);
             }
         }

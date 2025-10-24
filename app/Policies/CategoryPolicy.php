@@ -43,9 +43,11 @@ class CategoryPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Category $category): bool
+    public function delete(User $user, Category $category): Response
     {
-        return $category->tickets()->count() === 0; // а вот так
+        return $category->tickets()->doesntExist()
+            ? Response::allow()
+            : Response::deny('Нельзя удалить категорию, к которой привязаны тикеты.');
     }
 
     /**

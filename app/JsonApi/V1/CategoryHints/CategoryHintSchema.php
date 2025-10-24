@@ -32,7 +32,7 @@ class CategoryHintSchema extends Schema
         return [
             ID::make(),
             Str::make('text'),
-            Str::make('type'),
+            Str::make('hint_type'),
             DateTime::make('createdAt')->sortable()->readOnly(),
             DateTime::make('updatedAt')->sortable()->readOnly(),
 
