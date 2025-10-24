@@ -22,17 +22,28 @@ class TicketFactory extends Factory
     public function definition(): array
     {
         static $counter = 1;
+        $createdAt = $this->faker->dateTimeBetween('-2 months', 'now');
 
         return [
+            // Обязательные поля
             'number' => sprintf('KC-%04d', $counter++),
-            'pharmacy_id' => Pharmacy::inRandomOrder()->first()?->id ?? Pharmacy::factory(),
             'topic' => $this->faker->sentence(4),
-            'priority_id' => Priority::inRandomOrder()->first()?->id,
-            'category_id' => Category::inRandomOrder()->first()?->id ?? null,
-            'technician_id' => Technician::inRandomOrder()->first()?->id ?? Technician::factory(),
-            'status_id' => Status::inRandomOrder()->first()?->id ?? 1,
-            'created_at' => $this->faker->dateTimeBetween('-2 months', 'now'),
-            'updated_at' => now(),
+            'description' => $this->faker->paragraph(3),
+            'is_warranty_case' => $this->faker->boolean(25),
+
+            // Обязательные связи
+            'pharmacy_id' => Pharmacy::factory(),
+            'priority_id' => Priority::inRandomOrder()->first()->id,
+            'category_id' => Category::inRandomOrder()->first()->id,
+            'status_id' => Status::inRandomOrder()->first()->id,
+
+            // Необязательные поля
+            'technician_id' => Technician::inRandomOrder()->first()->id,
+            'reacted_at' => null,
+            'resolved_at' => null,
+
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt,
         ];
     }
 }

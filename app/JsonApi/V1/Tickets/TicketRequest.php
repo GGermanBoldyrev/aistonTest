@@ -16,21 +16,36 @@ class TicketRequest extends ResourceRequest
      */
     public function rules(): array
     {
-        return [
-            'number' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('tickets', 'number')->ignore($this->model?->id),
-            ],
-            'topic' => ['required', 'string', 'max:255'],
+        $uniqueNumber = Rule::unique('tickets', 'number');
+        if ($this->model()) {
+            $uniqueNumber->ignore($this->model()->getKey());
+        }
 
-            'pharmacy' => ['nullable'],
-            'priority' => ['nullable'],
-            'category' => ['nullable'],
-            'technician' => ['nullable'],
-            'status' => ['nullable'],
+        if ($this->isCreating()) {
+            return [
+                'number' => ['required', 'string', 'max:255', $uniqueNumber],
+                'topic' => ['required', 'string', 'max:255'],
+                'description' => ['required', 'string', 'min:10'],
+                'isWarrantyCase' => ['sometimes', 'boolean'],
+
+                'pharmacy' => ['required', JsonApiRule::toOne()],
+                'priority' => ['required', JsonApiRule::toOne()],
+                'category' => ['required', JsonApiRule::toOne()],
+            ];
+        }
+
+        return [
+            'number' => ['sometimes', 'string', 'max:255', $uniqueNumber],
+            'topic' => ['sometimes', 'string', 'max:255'],
+            'description' => ['sometimes', 'string', 'min:10'],
+            'isWarrantyCase' => ['sometimes', 'boolean'],
+            'solutionNotes' => ['nullable', 'string'],
+
+            'pharmacy' => ['sometimes', JsonApiRule::toOne()],
+            'priority' => ['sometimes', JsonApiRule::toOne()],
+            'category' => ['sometimes', JsonApiRule::toOne()],
+            'status' => ['sometimes', JsonApiRule::toOne()],
+            'technician' => ['sometimes', 'nullable', JsonApiRule::toOne()],
         ];
     }
-
 }

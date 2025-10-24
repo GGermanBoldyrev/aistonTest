@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('color')->nullable();
+            $table->string('description')->nullable();
+            $table->integer('priority_sort')->nullable();
             $table->timestamps();
         });
     }

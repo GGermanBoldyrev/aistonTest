@@ -14,12 +14,21 @@ return new class extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->string('number')->unique();
-            $table->foreignId('pharmacy_id')->nullable()->constrained();
             $table->string('topic');
-            $table->foreignId('priority_id')->nullable()->constrained();
-            $table->foreignId('category_id')->nullable()->constrained();
-            $table->foreignId('technician_id')->nullable()->constrained();
+            $table->text('description');
+            $table->boolean('is_warranty_case')->default(false);
+
+            // связи
+            $table->foreignId('pharmacy_id')->constrained()->onDelete('cascade');
+            $table->foreignId('priority_id')->constrained();
+            $table->foreignId('category_id')->constrained();
             $table->foreignId('status_id')->default(1)->constrained();
+            $table->foreignId('technician_id')->nullable()->constrained()->onDelete('set null');
+
+            // Поля для метрик
+            $table->timestamp('reacted_at')->nullable();
+            $table->timestamp('resolved_at')->nullable();
+
             $table->timestamps();
         });
     }

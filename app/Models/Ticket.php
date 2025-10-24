@@ -12,12 +12,20 @@ class Ticket extends Model
 
     protected $fillable = [
         'number',
-        'pharmacy_id',
         'topic',
+        'description',
+        'is_warranty_case',
+        'pharmacy_id',
         'priority_id',
         'category_id',
-        'technician_id',
         'status_id',
+        'technician_id',
+    ];
+
+    protected $casts = [
+        'is_warranty_case' => 'boolean',
+        'reacted_at' => 'datetime',
+        'resolved_at' => 'datetime',
     ];
 
     public function pharmacy()

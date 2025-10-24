@@ -3,7 +3,9 @@
 namespace App\JsonApi\V1\Tickets;
 
 use App\Models\Ticket;
+use Carbon\CarbonInterval;
 use LaravelJsonApi\Eloquent\Contracts\Paginator;
+use LaravelJsonApi\Eloquent\Fields\Boolean;
 use LaravelJsonApi\Eloquent\Fields\DateTime;
 use LaravelJsonApi\Eloquent\Fields\ID;
 use LaravelJsonApi\Eloquent\Fields\Relations\BelongsTo;
@@ -34,15 +36,26 @@ class TicketSchema extends Schema
             ID::make(),
             Str::make('number')->sortable(),
             Str::make('topic'),
+            Str::make('description'),
+            Boolean::make('isWarrantyCase'),
 
+            // Тут пусть фронт динамически считает сколько времени прошло
+            DateTime::make('reactedAt')->sortable()->readOnly(),
+            DateTime::make('resolvedAt')->sortable()->readOnly(),
+
+            DateTime::make('createdAt')->sortable()->readOnly(),
+            DateTime::make('updatedAt')->sortable()->readOnly(),
+        ];
+    }
+
+    public function relationships(): iterable
+    {
+        return [
             BelongsTo::make('pharmacy')->type('pharmacies'),
             BelongsTo::make('priority')->type('priorities'),
             BelongsTo::make('category')->type('categories'),
             BelongsTo::make('technician')->type('technicians'),
             BelongsTo::make('status')->type('statuses'),
-
-            DateTime::make('createdAt')->sortable()->readOnly(),
-            DateTime::make('updatedAt')->sortable()->readOnly(),
         ];
     }
 

@@ -23,6 +23,11 @@ class TicketResource extends JsonApiResource
         return [
             'number' => $this->resource->number,
             'topic' => $this->resource->topic,
+            'description' => $this->resource->description,
+            'isWarrantyCase' => $this->resource->is_warranty_case,
+
+            'reactedAt' => $this->resource->reacted_at,
+            'resolvedAt' => $this->resource->resolved_at,
             'createdAt' => $this->resource->created_at,
             'updatedAt' => $this->resource->updated_at,
         ];
@@ -37,12 +42,11 @@ class TicketResource extends JsonApiResource
     public function relationships($request): iterable
     {
         return [
-            'pharmacy' => $this->relation('pharmacy'),
-            'priority' => $this->relation('priority'),
-            'category' => $this->relation('category'),
-            'technician' => $this->relation('technician'),
-            'status' => $this->relation('status'),
+            $this->relation('pharmacy'),
+            $this->relation('priority'),
+            $this->relation('category'),
+            $this->relation('technician'),
+            $this->relation('status'),
         ];
     }
-
 }
