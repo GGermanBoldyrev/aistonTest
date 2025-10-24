@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             PharmacySeeder::class,
             PrioritySeeder::class,
             CategorySeeder::class,
+            CategoryHintSeeder::class,
             StatusSeeder::class,
             TechnicianSeeder::class,
             TicketSeeder::class,

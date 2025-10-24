@@ -12,6 +12,8 @@ class StatusSeeder extends Seeder
      */
     public function run(): void
     {
+        Status::query()->delete();
+
         $rows = [
             ['name' => 'Новая', 'color' => '#EAD1DC'],
             ['name' => 'В работе', 'color' => '#FFE599'],
@@ -21,7 +23,7 @@ class StatusSeeder extends Seeder
         ];
 
         foreach ($rows as $row) {
-            Status::updateOrCreate(['name' => $row['name']], ['color' => $row['color']]);
+            Status::create($row);
         }
     }
 }

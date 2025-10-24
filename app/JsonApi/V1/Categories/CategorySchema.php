@@ -32,9 +32,12 @@ class CategorySchema extends Schema
         return [
             ID::make(),
             Str::make('name')->sortable(),
-            HasMany::make('tickets')->type('tickets'),
             DateTime::make('createdAt')->sortable()->readOnly(),
             DateTime::make('updatedAt')->sortable()->readOnly(),
+
+            // relations
+            HasMany::make('hints')->type('category-hints'),
+            HasMany::make('tickets'),
         ];
     }
 

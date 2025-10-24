@@ -37,7 +37,7 @@ class CategoryResource extends JsonApiResource
     {
         return [
             'tickets' => $this->relation('tickets'),
+            'hints' => $this->relation('hints'),
         ];
     }
-
 }

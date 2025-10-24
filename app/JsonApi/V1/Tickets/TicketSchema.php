@@ -45,12 +45,8 @@ class TicketSchema extends Schema
 
             DateTime::make('createdAt')->sortable()->readOnly(),
             DateTime::make('updatedAt')->sortable()->readOnly(),
-        ];
-    }
 
-    public function relationships(): iterable
-    {
-        return [
+            // relations
             BelongsTo::make('pharmacy')->type('pharmacies'),
             BelongsTo::make('priority')->type('priorities'),
             BelongsTo::make('category')->type('categories'),

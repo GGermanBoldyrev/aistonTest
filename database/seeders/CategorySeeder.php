@@ -9,20 +9,19 @@ class CategorySeeder extends Seeder
 {
     public function run(): void
     {
-        $rows = [
-            'Кассы',
-            'Холодильники',
-            'Кондиционеры',
-            'ИТ',
-            'Сантехника',
-            'Измерительное оборудование',
-            'Помещения',
+        Category::query()->delete();
+
+        $categories = [
+            ['name' => 'Холодильники'],
+            ['name' => 'Кондиционеры'],
+            ['name' => 'Сантехника'],
+            ['name' => 'Компьютеры и ПО'],
+            ['name' => 'Кассовое оборудование'],
+            ['name' => 'Помещения'],
         ];
 
-        foreach ($rows as $row) {
-            Category::updateOrCreate(
-                ['name' => $row]
-            );
+        foreach ($categories as $category) {
+            Category::create($category);
         }
     }
 }

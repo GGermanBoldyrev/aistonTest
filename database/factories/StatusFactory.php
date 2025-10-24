@@ -17,7 +17,8 @@ class StatusFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->randomElement(['Новая', 'В работе', 'Готово', 'Закрыто', 'Отклонено']),
+            'color' => $this->faker->hexColor(),
         ];
     }
 }

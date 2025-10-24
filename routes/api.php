@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\CategoryHintController;
 use App\Http\Controllers\Api\V1\PharmacyController;
 use App\Http\Controllers\Api\V1\PriorityController;
 use App\Http\Controllers\Api\V1\StatusController;
@@ -26,4 +27,5 @@ JsonApiRoute::server('v1')
         $server->resource('technicians', TechnicianController::class);
         $server->resource('pharmacies', PharmacyController::class);
         $server->resource('tickets', TicketController::class);
+        $server->resource('category-hints', CategoryHintController::class);
     });
