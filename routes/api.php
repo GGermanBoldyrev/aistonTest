@@ -13,7 +13,6 @@ Route::get('/health', function () {
 // JsonApiRoute
 JsonApiRoute::server('v1')
     ->prefix('v1')
-    ->namespace('App\Http\Controllers\Api\V1')
     ->resources(function ($server) {
-
+        $server->resource('priorities', \App\Http\Controllers\Api\V1\PriorityController::class);
     });

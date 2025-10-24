@@ -32,7 +32,7 @@ class Server extends BaseServer
     protected function allSchemas(): array
     {
         return [
-            // @TODO
+            \App\JsonApi\V1\Priorities\PrioritySchema::class,
         ];
     }
 }
