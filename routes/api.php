@@ -20,6 +20,7 @@ Route::get('/health', function () {
 // JsonApiRoute
 JsonApiRoute::server('v1')
     ->prefix('v1')
+    ->middleware(\App\Http\Middleware\DevAuth::class) // для логина в локалке
     ->resources(function ($server) {
         $server->resource('priorities', PriorityController::class);
         $server->resource('categories', CategoryController::class);
