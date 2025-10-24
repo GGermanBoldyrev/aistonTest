@@ -37,7 +37,7 @@ class CategorySchema extends Schema
 
             // relations
             HasMany::make('hints')->type('category-hints'),
-            HasMany::make('tickets'),
+            HasMany::make('tickets')->type('tickets'),
         ];
     }
 
@@ -61,10 +61,5 @@ class CategorySchema extends Schema
     public function pagination(): ?Paginator
     {
         return PagePagination::make();
-    }
-
-    public function authorizable(): bool
-    {
-        return false;
     }
 }

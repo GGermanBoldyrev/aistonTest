@@ -61,9 +61,4 @@ class TechnicianSchema extends Schema
     {
         return PagePagination::make();
     }
-
-    public function authorizable(): bool
-    {
-        return false;
-    }
 }
