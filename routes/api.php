@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use LaravelJsonApi\Laravel\Facades\JsonApiRoute;
 
 // Health check endpoint
 Route::get('/health', function () {
@@ -9,6 +10,10 @@ Route::get('/health', function () {
     ]);
 });
 
-// API v1 routes group
-Route::prefix('v1')->group(function () {
-});
+// JsonApiRoute
+JsonApiRoute::server('v1')
+    ->prefix('v1')
+    ->namespace('App\Http\Controllers\Api\V1')
+    ->resources(function ($server) {
+
+    });
