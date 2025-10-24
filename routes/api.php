@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\PharmacyController;
 use App\Http\Controllers\Api\V1\PriorityController;
 use App\Http\Controllers\Api\V1\StatusController;
+use App\Http\Controllers\Api\V1\TechnicianController;
+use App\Http\Controllers\Api\V1\TicketController;
 use Illuminate\Support\Facades\Route;
 use LaravelJsonApi\Laravel\Facades\JsonApiRoute;
 
@@ -20,4 +23,7 @@ JsonApiRoute::server('v1')
         $server->resource('priorities', PriorityController::class);
         $server->resource('categories', CategoryController::class);
         $server->resource('statuses', StatusController::class);
+        $server->resource('technicians', TechnicianController::class);
+        $server->resource('pharmacies', PharmacyController::class);
+        $server->resource('tickets', TicketController::class);
     });

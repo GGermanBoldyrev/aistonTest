@@ -35,6 +35,9 @@ class Server extends BaseServer
             \App\JsonApi\V1\Priorities\PrioritySchema::class,
             \App\JsonApi\V1\Categories\CategorySchema::class,
             \App\JsonApi\V1\Statuses\StatusSchema::class,
+            \App\JsonApi\V1\Technicians\TechnicianSchema::class,
+            \App\JsonApi\V1\Pharmacies\PharmacySchema::class,
+            \App\JsonApi\V1\Tickets\TicketSchema::class,
         ];
     }
 }
