@@ -1,15 +1,15 @@
 <?php
 
-namespace App\JsonApi\V1\Priorities;
+namespace App\JsonApi\V1\Statuses;
 
-use App\Models\Priority;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use LaravelJsonApi\Core\Resources\JsonApiResource;
 
 /**
- * @property Priority $resource
+ * @property Status $resource
  */
-class PriorityResource extends JsonApiResource
+class StatusResource extends JsonApiResource
 {
 
     /**

@@ -33,6 +33,8 @@ class Server extends BaseServer
     {
         return [
             \App\JsonApi\V1\Priorities\PrioritySchema::class,
+            \App\JsonApi\V1\Categories\CategorySchema::class,
+            \App\JsonApi\V1\Statuses\StatusSchema::class,
         ];
     }
 }

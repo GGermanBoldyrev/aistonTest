@@ -1,15 +1,15 @@
 <?php
 
-namespace App\JsonApi\V1\Priorities;
+namespace App\JsonApi\V1\Categories;
 
-use App\Models\Priority;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use LaravelJsonApi\Core\Resources\JsonApiResource;
 
 /**
- * @property Priority $resource
+ * @property Category $resource
  */
-class PriorityResource extends JsonApiResource
+class CategoryResource extends JsonApiResource
 {
 
     /**
@@ -22,7 +22,6 @@ class PriorityResource extends JsonApiResource
     {
         return [
             'name' => $this->resource->name,
-            'color' => $this->resource->color,
             'createdAt' => $this->resource->created_at,
             'updatedAt' => $this->resource->updated_at,
         ];
