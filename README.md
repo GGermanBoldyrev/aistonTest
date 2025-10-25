@@ -4,6 +4,44 @@
 
 ## Запуск приложения
 
+### 1. Клонируем репозиторий
+``` bash
+    git clone <repository-url>
+    cd laravel-crud-users-comments
+```
+### 2. Копируем файл окружения
+``` bash
+    cp env.example .env
+```
+## 3. Настраиваем .env файл
+#### Базовые настройки уже корректно настроены в env.example
+### Для базы
+
+```
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=sail
+DB_PASSWORD=password
+
+MYSQL_EXTRA_OPTIONS=
+```
+
+## 4. Запускаем контейнеры
+``` bash
+    ./vendor/bin/sail up -d
+```
+
+## 5. Генерируем ключ приложения
+``` bash
+    ./vendor/bin/sail artisan key:generate
+```
+
+## 6. Запускаем миграции и сиды
+``` bash
+    ./vendor/bin/sail artisan migrate --seed
+```
 
 ## Команды Make
 ### Docker / Sail
@@ -51,8 +89,14 @@ make reset	Сбрасывает все миграции**
 ```bash 
     make reset
 ```
+
+### Как создается тикет: ###
+#### 1) Фронт стучится на ручку получает attachment ####
+#### 2) Прокидывает attachment в запрос ####
+
+#### Пример запроса: ####
 ```
-    {
+{
   "data": {
     "type": "tickets",
     "attributes": {
