@@ -7,7 +7,7 @@
 ### 1. Клонируем репозиторий
 ``` bash
     git clone <repository-url>
-    cd laravel-crud-users-comments
+    cd aistonTest
 ```
 ### 2. Копируем файл окружения
 ``` bash
