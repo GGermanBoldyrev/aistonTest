@@ -3,6 +3,8 @@
 namespace App\JsonApi\V1\Tickets;
 
 use App\JsonApi\V1\Filters\WhereDate;
+use App\JsonApi\V1\Filters\WhereDateFrom;
+use App\JsonApi\V1\Filters\WhereDateTo;
 use App\JsonApi\V1\Filters\WhereLike;
 use App\Models\Ticket;
 use Carbon\CarbonInterval;
@@ -87,7 +89,10 @@ class TicketSchema extends Schema
 
             // Фильтра по дате
             WhereDate::make('createdAt', 'created_at'),
-            WhereDate::make('updatedAt', 'updated_at'),
+
+            // по ренжу дат
+            WhereDateFrom::make('createdAtFrom', 'created_at'),
+            WhereDateTo::make('createdAtTo', 'created_at'),
 
 
             // пример поиска по аптеке GET /api/v1/tickets?filter[pharmacy][search]=Геленджик
