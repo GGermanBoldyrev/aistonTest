@@ -2,6 +2,7 @@
 
 namespace App\JsonApi\V1\Tickets;
 
+use App\JsonApi\V1\Filters\WhereDate;
 use App\JsonApi\V1\Filters\WhereLike;
 use App\Models\Ticket;
 use Carbon\CarbonInterval;
@@ -83,6 +84,10 @@ class TicketSchema extends Schema
             Where::make('priority_id'),
             Where::make('technician_id'),
             Where::make('pharmacy_id'),
+
+            // Фильтра по дате
+            WhereDate::make('createdAt', 'created_at'),
+            WhereDate::make('updatedAt', 'updated_at'),
         ];
     }
 
