@@ -36,6 +36,7 @@ return new class extends Migration
 
             $table->index('topic');
             $table->index('description');
+            $table->index('created_at');
         });
     }
 

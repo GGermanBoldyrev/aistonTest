@@ -3,6 +3,7 @@
 namespace App\JsonApi\V1\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use LaravelJsonApi\Eloquent\Contracts\Filter;
 use LaravelJsonApi\Eloquent\Filters\Concerns\DeserializesValue;
@@ -34,7 +35,15 @@ class WhereDate implements Filter
 
     public function apply(Mixed $query, $value): Builder
     {
-        // Используем whereDate для сравнения только по дате.
-        return $query->whereDate($this->column, $value);
+        try {
+            $date = Carbon::parse($value);
+
+            return $query->whereBetween($this->column, [
+                $date->copy()->startOfDay(),
+                $date->copy()->endOfDay(),
+            ]);
+        } catch (\Exception $e) {
+            return $query;
+        }
     }
 }
