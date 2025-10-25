@@ -28,6 +28,7 @@ class PriorityRequest extends ResourceRequest
                 'string',
                 'max:255',
             ],
+            'order' => ['sometimes', 'integer', 'min:0'],
         ];
     }
 }

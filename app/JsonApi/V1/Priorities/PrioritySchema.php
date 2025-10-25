@@ -6,6 +6,7 @@ use App\Models\Priority;
 use LaravelJsonApi\Eloquent\Contracts\Paginator;
 use LaravelJsonApi\Eloquent\Fields\DateTime;
 use LaravelJsonApi\Eloquent\Fields\ID;
+use LaravelJsonApi\Eloquent\Fields\Number;
 use LaravelJsonApi\Eloquent\Fields\Str;
 use LaravelJsonApi\Eloquent\Filters\WhereIdIn;
 use LaravelJsonApi\Eloquent\Pagination\PagePagination;
@@ -13,6 +14,13 @@ use LaravelJsonApi\Eloquent\Schema;
 
 class PrioritySchema extends Schema
 {
+
+    /**
+     * The default sort field.
+     *
+     * @var string
+     */
+    protected $defaultSort = 'order';
 
     /**
      * The model the schema corresponds to.
@@ -32,6 +40,8 @@ class PrioritySchema extends Schema
             ID::make(),
             Str::make('name'),
             Str::make('color'),
+            Str::make('description'),
+            Number::make('order', 'order_column')->sortable(),
             DateTime::make('createdAt')->sortable()->readOnly(),
             DateTime::make('updatedAt')->sortable()->readOnly(),
         ];

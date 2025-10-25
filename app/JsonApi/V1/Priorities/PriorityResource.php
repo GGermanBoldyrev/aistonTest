@@ -23,6 +23,8 @@ class PriorityResource extends JsonApiResource
         return [
             'name' => $this->resource->name,
             'color' => $this->resource->color,
+            'description' => $this->resource->description,
+            'order_column' => $this->resource->order_column,
             'createdAt' => $this->resource->created_at,
             'updatedAt' => $this->resource->updated_at,
         ];
