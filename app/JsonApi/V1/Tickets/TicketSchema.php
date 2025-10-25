@@ -2,6 +2,7 @@
 
 namespace App\JsonApi\V1\Tickets;
 
+use App\JsonApi\V1\Filters\WhereLike;
 use App\Models\Ticket;
 use Carbon\CarbonInterval;
 use LaravelJsonApi\Eloquent\Contracts\Paginator;
@@ -11,6 +12,7 @@ use LaravelJsonApi\Eloquent\Fields\ID;
 use LaravelJsonApi\Eloquent\Fields\Relations\BelongsTo;
 use LaravelJsonApi\Eloquent\Fields\Str;
 use LaravelJsonApi\Eloquent\Filters\Where;
+use LaravelJsonApi\Eloquent\Filters\WhereHas;
 use LaravelJsonApi\Eloquent\Filters\WhereIdIn;
 use LaravelJsonApi\Eloquent\Pagination\PagePagination;
 use LaravelJsonApi\Eloquent\Schema;
@@ -35,8 +37,9 @@ class TicketSchema extends Schema
         return [
             ID::make(),
             Str::make('number')->sortable(),
-            Str::make('topic'),
-            Str::make('description'),
+            Str::make('topic')->sortable(),
+            Str::make('description')->sortable(),
+            Str::make('user_id')->sortable(),
             Boolean::make('isWarrantyCase'),
 
             // Тут пусть фронт динамически считает сколько времени прошло
@@ -65,11 +68,21 @@ class TicketSchema extends Schema
         return [
             WhereIdIn::make($this),
 
-            // Поиск по номеру
-            Where::make('number'),
+            // Кастомный поиск c
+            WhereLike::make('searchNumber', 'number'),
+            WhereLike::make('searchTopic', 'topic'),
 
-            // Поиск по статусу
+            // Верхний поиск
+            WhereLike::make('search', ['number', 'topic']),
+
+
+            // Простой поиск
+            Where::make('number'),
             Where::make('status_id'),
+            Where::make('category_id'),
+            Where::make('priority_id'),
+            Where::make('technician_id'),
+            Where::make('pharmacy_id'),
         ];
     }
 

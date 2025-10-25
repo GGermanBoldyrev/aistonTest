@@ -30,6 +30,7 @@ class TicketFactory extends Factory
             'topic' => $this->faker->sentence(4),
             'description' => $this->faker->paragraph(3),
             'is_warranty_case' => $this->faker->boolean(25),
+            'user_id' => $this->faker->randomElement([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
 
             // Обязательные связи
             'pharmacy_id' => Pharmacy::factory(),

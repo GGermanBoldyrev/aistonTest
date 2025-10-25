@@ -18,6 +18,9 @@ return new class extends Migration
             $table->text('description');
             $table->boolean('is_warranty_case')->default(false);
 
+            // Должно быть по связи но реально уже много времени потратил
+            $table->string('user_id');
+
             // связи
             $table->foreignId('pharmacy_id')->constrained()->onDelete('cascade');
             $table->foreignId('priority_id')->constrained();

@@ -24,6 +24,7 @@ class TicketResource extends JsonApiResource
             'number' => $this->resource->number,
             'topic' => $this->resource->topic,
             'description' => $this->resource->description,
+            'user_id' => $this->resource->user_id,
             'isWarrantyCase' => $this->resource->is_warranty_case,
 
             'reactedAt' => $this->resource->reacted_at,

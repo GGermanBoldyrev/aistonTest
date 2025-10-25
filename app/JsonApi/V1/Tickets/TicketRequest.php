@@ -22,6 +22,7 @@ class TicketRequest extends ResourceRequest
                 'number' => ['required', 'string', 'max:255', $uniqueNumber],
                 'topic' => ['required', 'string', 'max:255'],
                 'description' => ['required', 'string', 'min:10'],
+                'user_id' => ['required', 'string', 'min:0'],
                 'isWarrantyCase' => ['sometimes', 'boolean'],
 
                 'pharmacy' => ['required', JsonApiRule::toOne()],
@@ -37,6 +38,7 @@ class TicketRequest extends ResourceRequest
             'number' => ['sometimes', 'required', 'string', 'max:255', $uniqueNumber],
             'topic' => ['sometimes', 'required', 'string', 'max:255'],
             'description' => ['sometimes', 'required', 'string', 'min:10'],
+            'user_id' => ['sometimes', 'required', 'string', 'min:0'],
             'isWarrantyCase' => ['sometimes', 'boolean'],
 
             'pharmacy' => ['sometimes', JsonApiRule::toOne()],

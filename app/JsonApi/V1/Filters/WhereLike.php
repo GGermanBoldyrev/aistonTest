@@ -4,6 +4,7 @@ namespace App\JsonApi\V1\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use LaravelJsonApi\Core\Support\Arr;
 use LaravelJsonApi\Eloquent\Contracts\Filter;
 use LaravelJsonApi\Eloquent\Filters\Concerns\DeserializesValue;
 use LaravelJsonApi\Eloquent\Filters\Concerns\IsSingular;
@@ -15,17 +16,17 @@ class WhereLike implements Filter
 
     private string $name;
 
-    private string $column;
+    private mixed $columns;
 
-    public static function make(string $name, string $column = null): self
+    public static function make(string $name, $columns = null): self
     {
-        return new static($name, $column);
+        return new static($name, $columns);
     }
 
-    public function __construct(string $name, string $column = null)
+    public function __construct(string $name, $columns = null)
     {
         $this->name = $name;
-        $this->column = $column ?: Str::snake($name);
+        $this->columns = $columns ?: Str::snake($name);
     }
 
     public function key(): string
@@ -35,6 +36,13 @@ class WhereLike implements Filter
 
     public function apply(Mixed $query, $value): Builder
     {
-        return $query->where($this->column, 'like', '%' . $value . '%');
+        $value = $this->deserialize($value);
+        $columns = Arr::wrap($this->columns);
+
+        return $query->where(function (Builder $q) use ($columns, $value) {
+            foreach ($columns as $column) {
+                $q->orWhere($column, 'like', '%' . $value . '%');
+            }
+        });
     }
 }
