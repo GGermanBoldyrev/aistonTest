@@ -16,10 +16,20 @@ class TechnicianRequest extends ResourceRequest
      */
     public function rules(): array
     {
+        $uniqueEmail = Rule::unique('technicians', 'email')->ignore($this->model()?->id);
+
+        if ($this->isCreating()) {
+            return [
+                'name' => ['required', 'string', 'max:255'],
+                'phone' => ['nullable', 'string', 'max:255'],
+                'email' => ['nullable', 'email', $uniqueEmail],
+            ];
+        }
+
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:255'],
-            'email' => ['nullable', 'email', Rule::unique('technicians', 'email')->ignore($this->model?->id)],
+            'name' => ['sometimes', 'required', 'string', 'max:255'],
+            'phone' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'email' => ['sometimes', 'nullable', 'email', $uniqueEmail],
         ];
     }
 

@@ -16,16 +16,21 @@ class PharmacyRequest extends ResourceRequest
      */
     public function rules(): array
     {
+        $uniqueCode = Rule::unique('pharmacies', 'code')
+            ->ignore($this->model()?->id);
+
+        if ($this->isCreating()) {
+            return [
+                'code' => ['required', 'string', 'max:255', $uniqueCode],
+                'address' => ['required', 'string', 'max:255'],
+                'city' => ['nullable', 'string', 'max:255'],
+            ];
+        }
+
         return [
-            'code' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('pharmacies', 'code')->ignore($this->model?->id),
-            ],
-            'address' => ['required', 'string', 'max:255'],
-            'city' => ['nullable', 'string', 'max:255'],
+            'code' => ['sometimes', 'required', 'string', 'max:255', $uniqueCode],
+            'address' => ['sometimes', 'required', 'string', 'max:255'],
+            'city' => ['sometimes', 'nullable', 'string', 'max:255'],
         ];
     }
-
 }

@@ -43,9 +43,11 @@ class PriorityPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Priority $priority): bool
+    public function delete(User $user, Priority $priority): Response
     {
-        return true;
+        return $priority->tickets()->doesntExist()
+            ? Response::allow()
+            : Response::deny('Нельзя удалить категорию, к которой привязаны тикеты.');
     }
 
     /**

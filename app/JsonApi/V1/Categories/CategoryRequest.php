@@ -16,13 +16,16 @@ class CategoryRequest extends ResourceRequest
      */
     public function rules(): array
     {
+        $uniqueName = Rule::unique('categories', 'name')->ignore($this->model()?->id);
+
+        if ($this->isCreating()) {
+            return [
+                'name' => ['required', 'string', 'max:255', $uniqueName],
+            ];
+        }
+
         return [
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('categories', 'name')->ignore($this->model?->id),
-            ],
+            'name' => ['sometimes', 'required', 'string', 'max:255', $uniqueName],
         ];
     }
 

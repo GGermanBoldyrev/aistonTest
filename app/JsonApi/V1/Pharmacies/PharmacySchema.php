@@ -2,12 +2,14 @@
 
 namespace App\JsonApi\V1\Pharmacies;
 
+use App\JsonApi\V1\Filters\WhereLike;
 use App\Models\Pharmacy;
 use LaravelJsonApi\Eloquent\Contracts\Paginator;
 use LaravelJsonApi\Eloquent\Fields\DateTime;
 use LaravelJsonApi\Eloquent\Fields\ID;
 use LaravelJsonApi\Eloquent\Fields\Relations\HasMany;
 use LaravelJsonApi\Eloquent\Fields\Str;
+use LaravelJsonApi\Eloquent\Filters\Where;
 use LaravelJsonApi\Eloquent\Filters\WhereIdIn;
 use LaravelJsonApi\Eloquent\Pagination\PagePagination;
 use LaravelJsonApi\Eloquent\Schema;
@@ -32,11 +34,14 @@ class PharmacySchema extends Schema
         return [
             ID::make(),
             Str::make('code')->sortable(),
-            Str::make('address'),
-            Str::make('city'),
-            HasMany::make('tickets')->type('tickets'),
+            Str::make('address')->sortable(),
+            Str::make('city')->sortable(),
+
             DateTime::make('createdAt')->sortable()->readOnly(),
             DateTime::make('updatedAt')->sortable()->readOnly(),
+
+            // relations
+            HasMany::make('tickets')->type('tickets'),
         ];
     }
 
@@ -48,7 +53,16 @@ class PharmacySchema extends Schema
     public function filters(): array
     {
         return [
+            // Точный поиск
             WhereIdIn::make($this),
+            Where::make('code'),
+            Where::make('city'),
+            Where::make('address'),
+
+            // Кастомный поиск
+            WhereLike::make('searchCode', 'code'),
+            WhereLike::make('searchAddress', 'address'),
+            WhereLike::make('searchCity', 'city'),
         ];
     }
 

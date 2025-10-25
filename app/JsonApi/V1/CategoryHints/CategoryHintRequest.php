@@ -16,11 +16,20 @@ class CategoryHintRequest extends ResourceRequest
      */
     public function rules(): array
     {
+        if ($this->isCreating()) {
+            return [
+                'text' => ['required', 'string', 'min:5'],
+                'hint_type' => ['required', Rule::in(['positive', 'negative'])],
+                'order' => ['sometimes', 'integer', 'min:0'],
+                'category' => ['required', JsonApiRule::toOne()],
+            ];
+        }
+
         return [
-            'text' => ['required', 'string', 'min:5'],
-            'hint_type' => ['required', Rule::in(['positive', 'negative'])],
+            'text' => ['sometimes', 'required', 'string', 'min:5'],
+            'hintType' => ['sometimes', 'required', Rule::in(['positive', 'negative'])],
             'order' => ['sometimes', 'integer', 'min:0'],
-            'category' => ['required', JsonApiRule::toOne()],
+            'category' => ['sometimes', JsonApiRule::toOne()],
         ];
     }
 }

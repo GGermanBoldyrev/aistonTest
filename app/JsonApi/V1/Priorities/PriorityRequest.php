@@ -16,18 +16,19 @@ class PriorityRequest extends ResourceRequest
      */
     public function rules(): array
     {
+        $uniqueName = Rule::unique('priorities', 'name')->ignore($this->model()?->id);
+
+        if ($this->isCreating()) {
+            return [
+                'name' => ['required', 'string', 'max:255', $uniqueName],
+                'color' => ['nullable', 'string', 'max:255'],
+                'order' => ['sometimes', 'integer', 'min:0'],
+            ];
+        }
+
         return [
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('priorities', 'name')->ignore($this->model?->id),
-            ],
-            'color' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
+            'name' => ['sometimes', 'required', 'string', 'max:255', $uniqueName],
+            'color' => ['sometimes', 'nullable', 'string', 'max:255'],
             'order' => ['sometimes', 'integer', 'min:0'],
         ];
     }
