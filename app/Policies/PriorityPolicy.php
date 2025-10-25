@@ -65,4 +65,12 @@ class PriorityPolicy
     {
         return true;
     }
+
+    /**
+     * Связь hasMany
+     */
+    public function viewTickets(?User $user, Priority $priority): bool
+    {
+        return $this->view($user, $priority);
+    }
 }

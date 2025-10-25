@@ -63,4 +63,12 @@ class TechnicianPolicy
     {
         return true;
     }
+
+    /**
+     * Связь hasMany
+     */
+    public function viewTickets(?User $user, Technician $technician): bool
+    {
+        return $this->view($user, $technician);
+    }
 }

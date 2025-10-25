@@ -63,4 +63,40 @@ class TicketPolicy
     {
         return true;
     }
+
+    /**
+     * Связи hasOne
+     */
+    public function viewPharmacy(?User $user, Ticket $ticket): bool
+    {
+        return $this->view($user, $ticket);
+    }
+
+    public function viewPriority(?User $user, Ticket $ticket): bool
+    {
+        return $this->view($user, $ticket);
+    }
+
+    public function viewStatus(?User $user, Ticket $ticket): bool
+    {
+        return $this->view($user, $ticket);
+    }
+
+    public function viewCategory(?User $user, Ticket $ticket): bool
+    {
+        return $this->view($user, $ticket);
+    }
+
+    public function viewTechnician(?User $user, Ticket $ticket): bool
+    {
+        return $this->view($user, $ticket);
+    }
+
+    /**
+     * Связь hasMany
+     */
+    public function viewAttachments(?User $user, Ticket $ticket): bool
+    {
+        return $this->view($user, $ticket);
+    }
 }
