@@ -19,6 +19,7 @@ class CategoryHintRequest extends ResourceRequest
         return [
             'text' => ['required', 'string', 'min:5'],
             'hint_type' => ['required', Rule::in(['positive', 'negative'])],
+            'order' => ['sometimes', 'integer', 'min:0'],
             'category' => ['required', JsonApiRule::toOne()],
         ];
     }

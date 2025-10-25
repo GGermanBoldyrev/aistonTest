@@ -23,6 +23,7 @@ class CategoryHintResource extends JsonApiResource
         return [
             'text' => $this->resource->text,
             'hint_type' => $this->resource->hint_type,
+            'order' => $this->resource->order_column,
             'createdAt' => $this->resource->created_at,
             'updatedAt' => $this->resource->updated_at,
         ];

@@ -6,6 +6,7 @@ use App\Models\CategoryHint;
 use LaravelJsonApi\Eloquent\Contracts\Paginator;
 use LaravelJsonApi\Eloquent\Fields\DateTime;
 use LaravelJsonApi\Eloquent\Fields\ID;
+use LaravelJsonApi\Eloquent\Fields\Number;
 use LaravelJsonApi\Eloquent\Fields\Relations\BelongsTo;
 use LaravelJsonApi\Eloquent\Fields\Str;
 use LaravelJsonApi\Eloquent\Filters\WhereIdIn;
@@ -14,6 +15,12 @@ use LaravelJsonApi\Eloquent\Schema;
 
 class CategoryHintSchema extends Schema
 {
+    /**
+     * The default sort field.
+     *
+     * @var string
+     */
+    protected $defaultSort = '-order';
 
     /**
      * The model the schema corresponds to.
@@ -33,6 +40,7 @@ class CategoryHintSchema extends Schema
             ID::make(),
             Str::make('text'),
             Str::make('hint_type'),
+            Number::make('order', 'order_column')->sortable(),
             DateTime::make('createdAt')->sortable()->readOnly(),
             DateTime::make('updatedAt')->sortable()->readOnly(),
 
