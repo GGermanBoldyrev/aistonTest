@@ -20,7 +20,7 @@ class CategoryHintSchema extends Schema
      *
      * @var string
      */
-    protected $defaultSort = '-order';
+    protected $defaultSort = 'order';
 
     /**
      * The model the schema corresponds to.
