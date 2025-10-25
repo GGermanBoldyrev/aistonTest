@@ -88,6 +88,10 @@ class TicketSchema extends Schema
             // Фильтра по дате
             WhereDate::make('createdAt', 'created_at'),
             WhereDate::make('updatedAt', 'updated_at'),
+
+
+            // пример поиска по аптеке GET /api/v1/tickets?filter[pharmacy][search]=Геленджик
+            WhereHas::make($this, 'pharmacy'),
         ];
     }
 

@@ -63,6 +63,9 @@ class PharmacySchema extends Schema
             WhereLike::make('searchCode', 'code'),
             WhereLike::make('searchAddress', 'address'),
             WhereLike::make('searchCity', 'city'),
+
+            // Внешний фильтр по аптеке
+            WhereLike::make('search', ['code', 'city', 'address']),
         ];
     }
 
