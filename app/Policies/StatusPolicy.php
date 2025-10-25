@@ -43,9 +43,11 @@ class StatusPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Status $status): bool
+    public function delete(User $user, Status $status): Response
     {
-        return true;
+        return $status->tickets()->doesntExist()
+            ? Response::allow()
+            : Response::deny('Нельзя удалить статус, к которому привязаны тикеты.');
     }
 
     /**

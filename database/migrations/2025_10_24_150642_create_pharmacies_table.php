@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('address');
             $table->string('city')->nullable();
             $table->timestamps();
+
+            $table->index('address');
         });
     }
 

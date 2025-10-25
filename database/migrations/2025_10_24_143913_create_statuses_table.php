@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('color')->nullable();
             $table->unsignedInteger('order_column')->default(0);
             $table->timestamps();
+
+            $table->index('order_column');
         });
     }
 

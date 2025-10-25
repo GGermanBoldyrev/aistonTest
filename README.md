@@ -51,3 +51,48 @@ make reset	Сбрасывает все миграции**
 ```bash 
     make reset
 ```
+```
+    {
+  "data": {
+    "type": "tickets",
+    "attributes": {
+      "number": "Настроить CI/CD для проекта",
+      "description": "Использовать GitHub Actions для автоматической сборки и тестирования",
+      "topic": "new",
+      "user_id": "12"
+    },
+    "relationships": {
+      "pharmacy": {
+        "data": {
+          "type": "pharmacies",
+          "id": "5"
+        }
+      },
+      "priority": {
+        "data": {
+          "type": "priorities",
+          "id": "2"
+        }
+      },
+      "category": {
+        "data": {
+          "type": "categories",
+          "id": "5"
+        }
+      },
+      "status": {
+        "data": {
+          "type": "statuses",
+          "id": "1"
+        }
+      },
+      "technician": {
+        "data": {
+          "type": "technicians",
+          "id": "10"
+        }
+      }
+    }
+  }
+}
+```

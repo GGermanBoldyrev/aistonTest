@@ -33,6 +33,9 @@ return new class extends Migration
             $table->timestamp('resolved_at')->nullable();
 
             $table->timestamps();
+
+            $table->index('topic');
+            $table->index('description');
         });
     }
 

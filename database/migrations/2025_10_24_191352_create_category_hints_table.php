@@ -18,6 +18,9 @@ return new class extends Migration
             $table->enum('hint_type', ['positive', 'negative'])->default('positive');
             $table->unsignedInteger('order_column')->default(0);
             $table->timestamps();
+
+            $table->index('order_column');
+
         });
     }
 

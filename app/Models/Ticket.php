@@ -14,6 +14,7 @@ class Ticket extends Model
         'number',
         'topic',
         'description',
+        'user_id',
         'is_warranty_case',
         'pharmacy_id',
         'priority_id',
