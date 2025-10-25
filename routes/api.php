@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AttachmentController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CategoryHintController;
 use App\Http\Controllers\Api\V1\PharmacyController;
@@ -16,6 +17,14 @@ Route::get('/health', function () {
         'status' => 'ok',
     ]);
 });
+
+Route::middleware(\App\Http\Middleware\DevAuth::class)
+    ->prefix('v1')
+    ->name('api.v1.')
+    ->group(function () {
+        Route::post('/attachments', [AttachmentController::class, 'store'])->name('attachments.store');
+        Route::delete('/attachments/{uuid}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
+    });
 
 // JsonApiRoute
 JsonApiRoute::server('v1')

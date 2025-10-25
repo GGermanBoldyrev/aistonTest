@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use LaravelJsonApi\Eloquent\Fields\ArrayList;
 
 return new class extends Migration
 {
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->boolean('is_warranty_case')->default(false);
 
             // Должно быть по связи но реально уже много времени потратил
-            $table->string('user_id');
+            $table->string('user_id')->default(2);
 
             // связи
             $table->foreignId('pharmacy_id')->constrained()->onDelete('cascade');
@@ -35,7 +36,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index('topic');
-            $table->index('description');
+            $table->fullText('description', 'tickets_description_fulltext');
             $table->index('created_at');
         });
     }

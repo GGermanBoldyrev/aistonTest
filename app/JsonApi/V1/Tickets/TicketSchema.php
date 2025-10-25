@@ -8,11 +8,15 @@ use App\JsonApi\V1\Filters\WhereDateTo;
 use App\JsonApi\V1\Filters\WhereLike;
 use App\Models\Ticket;
 use Carbon\CarbonInterval;
+use Illuminate\Http\Request;
 use LaravelJsonApi\Eloquent\Contracts\Paginator;
+use LaravelJsonApi\Eloquent\Fields\ArrayList;
+use LaravelJsonApi\Eloquent\Fields\Attribute;
 use LaravelJsonApi\Eloquent\Fields\Boolean;
 use LaravelJsonApi\Eloquent\Fields\DateTime;
 use LaravelJsonApi\Eloquent\Fields\ID;
 use LaravelJsonApi\Eloquent\Fields\Relations\BelongsTo;
+use LaravelJsonApi\Eloquent\Fields\Relations\HasMany;
 use LaravelJsonApi\Eloquent\Fields\Str;
 use LaravelJsonApi\Eloquent\Filters\Where;
 use LaravelJsonApi\Eloquent\Filters\WhereHas;
@@ -58,6 +62,9 @@ class TicketSchema extends Schema
             BelongsTo::make('category')->type('categories'),
             BelongsTo::make('technician')->type('technicians'),
             BelongsTo::make('status')->type('statuses'),
+            HasMany::make('attachments')->type('attachments')->readOnly(),
+
+            //ArrayList::make('attachments')->hidden() // для записи
         ];
     }
 
@@ -93,7 +100,6 @@ class TicketSchema extends Schema
             // по ренжу дат
             WhereDateFrom::make('createdAtFrom', 'created_at'),
             WhereDateTo::make('createdAtTo', 'created_at'),
-
 
             // пример поиска по аптеке GET /api/v1/tickets?filter[pharmacy][search]=Геленджик
             WhereHas::make($this, 'pharmacy'),

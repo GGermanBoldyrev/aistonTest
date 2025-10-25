@@ -59,7 +59,10 @@ make reset	Сбрасывает все миграции**
       "number": "Настроить CI/CD для проекта",
       "description": "Использовать GitHub Actions для автоматической сборки и тестирования",
       "topic": "new",
-      "user_id": "12"
+      "user_id": "12",
+      "attachments": [
+        "325efcaf-28b4-4ab6-8acc-071a4ced9973"
+      ]
     },
     "relationships": {
       "pharmacy": {
