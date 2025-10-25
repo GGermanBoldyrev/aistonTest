@@ -23,6 +23,7 @@ class StatusResource extends JsonApiResource
         return [
             'name' => $this->resource->name,
             'color' => $this->resource->color,
+            'order' => $this->resource->order_column,
             'createdAt' => $this->resource->created_at,
             'updatedAt' => $this->resource->updated_at,
         ];
