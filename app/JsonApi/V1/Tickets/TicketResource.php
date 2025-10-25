@@ -48,6 +48,7 @@ class TicketResource extends JsonApiResource
             $this->relation('category'),
             $this->relation('technician'),
             $this->relation('status'),
+            $this->relation('attachments'),
         ];
     }
 }

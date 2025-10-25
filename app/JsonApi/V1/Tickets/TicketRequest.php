@@ -31,6 +31,10 @@ class TicketRequest extends ResourceRequest
 
                 'status' => ['sometimes', JsonApiRule::toOne()],
                 'technician' => ['sometimes', 'nullable', JsonApiRule::toOne()],
+
+                // вложения
+                'attachments' => ['sometimes', 'array'],
+                'attachments.*' => ['string', 'uuid'],
             ];
         }
 
