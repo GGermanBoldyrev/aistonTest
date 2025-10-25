@@ -33,31 +33,25 @@ JsonApiRoute::server('v1')
     ->prefix('v1')
     ->middleware(\App\Http\Middleware\DevAuth::class) // для логина в локалке
     ->resources(function (ResourceRegistrar $server) {
-        $server->resource('priorities', PriorityController::class)
-            ->relationships(function (Relationships $relations) {
-                $relations->hasMany('tickets');
-            });
 
-        $server->resource('categories', CategoryController::class)
-            ->relationships(function (Relationships $relations) {
-                $relations->hasMany('hints');
-                $relations->hasMany('tickets');
-            });
+        $lookupTicketResources = [
+            'priorities' => PriorityController::class,
+            'categories' => CategoryController::class,
+            'statuses' => StatusController::class,
+            'technicians' => TechnicianController::class,
+            'pharmacies' => PharmacyController::class,
+        ];
 
-        $server->resource('statuses', StatusController::class)
-            ->relationships(function (Relationships $relations) {
-                $relations->hasMany('tickets');
-            });
+        foreach ($lookupTicketResources as $resourceName => $controller) {
+            $server->resource($resourceName, $controller)
+                ->relationships(function (Relationships $relations) use ($resourceName) {
+                    $relations->hasMany('tickets');
 
-        $server->resource('technicians', TechnicianController::class)
-            ->relationships(function (Relationships $relations) {
-                $relations->hasMany('tickets');
-            });
-
-        $server->resource('pharmacies', PharmacyController::class)
-            ->relationships(function (Relationships $relations) {
-                $relations->hasMany('tickets');
-            });
+                    if ($resourceName === 'categories') {
+                        $relations->hasMany('hints');
+                    }
+                });
+        }
 
         $server->resource('tickets', TicketController::class)
             ->relationships(function (Relationships $relations) {
