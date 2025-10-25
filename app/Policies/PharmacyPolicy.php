@@ -63,4 +63,12 @@ class PharmacyPolicy
     {
         return true;
     }
+
+    /**
+     * Связь hasMany
+     */
+    public function viewTickets(?User $user, Pharmacy $pharmacy): bool
+    {
+        return $this->view($user, $pharmacy);
+    }
 }

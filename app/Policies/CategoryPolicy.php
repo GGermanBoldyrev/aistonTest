@@ -65,4 +65,17 @@ class CategoryPolicy
     {
         return true;
     }
+
+    /**
+     * Связь hasMany
+     */
+    public function viewHints(?User $user, Category $category): bool
+    {
+        return $this->view($user, $category);
+    }
+
+    public function viewTickets(?User $user, Category $category): bool
+    {
+        return $this->view($user, $category);
+    }
 }

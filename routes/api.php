@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\V1\TechnicianController;
 use App\Http\Controllers\Api\V1\TicketController;
 use Illuminate\Support\Facades\Route;
 use LaravelJsonApi\Laravel\Facades\JsonApiRoute;
+use LaravelJsonApi\Laravel\Routing\Relationships;
+use LaravelJsonApi\Laravel\Routing\ResourceRegistrar;
 
 // Health check endpoint
 Route::get('/health', function () {
@@ -30,12 +32,42 @@ Route::middleware(\App\Http\Middleware\DevAuth::class)
 JsonApiRoute::server('v1')
     ->prefix('v1')
     ->middleware(\App\Http\Middleware\DevAuth::class) // для логина в локалке
-    ->resources(function ($server) {
-        $server->resource('priorities', PriorityController::class);
-        $server->resource('categories', CategoryController::class);
-        $server->resource('statuses', StatusController::class);
-        $server->resource('technicians', TechnicianController::class);
-        $server->resource('pharmacies', PharmacyController::class);
-        $server->resource('tickets', TicketController::class);
+    ->resources(function (ResourceRegistrar $server) {
+        $server->resource('priorities', PriorityController::class)
+            ->relationships(function (Relationships $relations) {
+                $relations->hasMany('tickets');
+            });
+
+        $server->resource('categories', CategoryController::class)
+            ->relationships(function (Relationships $relations) {
+                $relations->hasMany('hints');
+                $relations->hasMany('tickets');
+            });
+
+        $server->resource('statuses', StatusController::class)
+            ->relationships(function (Relationships $relations) {
+                $relations->hasMany('tickets');
+            });
+
+        $server->resource('technicians', TechnicianController::class)
+            ->relationships(function (Relationships $relations) {
+                $relations->hasMany('tickets');
+            });
+
+        $server->resource('pharmacies', PharmacyController::class)
+            ->relationships(function (Relationships $relations) {
+                $relations->hasMany('tickets');
+            });
+
+        $server->resource('tickets', TicketController::class)
+            ->relationships(function (Relationships $relations) {
+                $relations->hasOne('pharmacy');
+                $relations->hasOne('priority');
+                $relations->hasOne('status');
+                $relations->hasOne('category');
+                $relations->hasOne('technician');
+                $relations->hasMany('attachments');
+            });
+
         $server->resource('category-hints', CategoryHintController::class);
     });

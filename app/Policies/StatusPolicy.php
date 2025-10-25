@@ -65,4 +65,12 @@ class StatusPolicy
     {
         return true;
     }
+
+    /**
+     * Связь hasMany
+     */
+    public function viewTickets(?User $user, Status $status): bool
+    {
+        return $this->view($user, $status);
+    }
 }
