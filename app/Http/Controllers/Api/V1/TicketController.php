@@ -32,7 +32,7 @@ class TicketController extends Controller
     ): DataResponse {
         $validated = $request->validated();
 
-        $attachmentUuids = (array) data_get($request->input('data'), 'attributes.attachments', []);
+        $attachmentUuids = (array) data_get($request->input('data'), 'attributes.ticketAttachments', []);
 
         $ticket = DB::transaction(function () use ($schema, $validated, $action, $attachmentUuids) {
             $ticket = $schema->repository()->create()->store($validated);

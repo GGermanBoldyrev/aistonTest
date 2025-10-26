@@ -64,7 +64,7 @@ class TicketSchema extends Schema
             BelongsTo::make('status')->type('statuses'),
             HasMany::make('attachments')->type('attachments')->readOnly(),
 
-            //ArrayList::make('attachments')->hidden() // для записи
+            ArrayList::make('ticketAttachments')->hidden() // для записи
         ];
     }
 

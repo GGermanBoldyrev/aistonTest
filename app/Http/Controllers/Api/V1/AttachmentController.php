@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Http\Requests\AttachmentUploadRequest;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -12,16 +13,8 @@ use Illuminate\Validation\Rules\File;
 
 class AttachmentController extends Controller
 {
-    public function store(Request $request): JsonResponse
+    public function store(AttachmentUploadRequest $request): JsonResponse
     {
-        $request->validate([
-            'file' => [
-                'required',
-                File::types(['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'])
-                    ->max(10 * 1024),
-            ],
-        ]);
-
         $file = $request->file('file');
         $uuid = (string)Str::uuid();
         $fileName = "{$uuid}." . $file->getClientOriginalExtension();
