@@ -9,7 +9,7 @@ class Priority extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'color'];
+    protected $fillable = ['name', 'color', 'description'];
 
     public function tickets()
     {
