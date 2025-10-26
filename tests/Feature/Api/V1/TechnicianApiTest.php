@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Api\V1;
 
-use App\Models\Priority;
+use App\Models\Technician;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class PriorityApiTest extends TestCase
+class TechnicianApiTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -21,11 +21,11 @@ class PriorityApiTest extends TestCase
     }
 
     #[Test]
-    public function it_can_list_priorities()
+    public function it_can_list_technicians()
     {
-        Priority::factory()->count(3)->create();
+        Technician::factory()->count(3)->create();
 
-        $response = $this->getJson('/api/v1/priorities', [
+        $response = $this->getJson('/api/v1/technicians', [
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json'
         ]);
@@ -38,9 +38,8 @@ class PriorityApiTest extends TestCase
                             'type',
                             'attributes' => [
                                 'name',
-                                'color',
-                                'description',
-                                'order_column',
+                                'phone',
+                                'email',
                                 'createdAt',
                                 'updatedAt'
                             ]
@@ -50,20 +49,20 @@ class PriorityApiTest extends TestCase
     }
 
     #[Test]
-    public function it_can_create_priority()
+    public function it_can_create_technician()
     {
-        $priorityData = [
+        $technicianData = [
             'data' => [
-                'type' => 'priorities',
+                'type' => 'technicians',
                 'attributes' => [
-                    'name' => 'High Priority',
-                    'color' => '#FF0000',
-                    'description' => 'Very important'
+                    'name' => 'John Doe',
+                    'phone' => '+1234567890',
+                    'email' => 'john@example.com'
                 ]
             ]
         ];
 
-        $response = $this->postJson('/api/v1/priorities', $priorityData, [
+        $response = $this->postJson('/api/v1/technicians', $technicianData, [
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json'
         ]);
@@ -75,28 +74,27 @@ class PriorityApiTest extends TestCase
                         'type',
                         'attributes' => [
                             'name',
-                            'color',
-                            'description',
-                            'order_column',
+                            'phone',
+                            'email',
                             'createdAt',
                             'updatedAt'
                         ]
                     ]
                 ]);
 
-        $this->assertDatabaseHas('priorities', [
-            'name' => 'High Priority',
-            'color' => '#FF0000',
-            'description' => 'Very important'
+        $this->assertDatabaseHas('technicians', [
+            'name' => 'John Doe',
+            'phone' => '+1234567890',
+            'email' => 'john@example.com'
         ]);
     }
 
     #[Test]
-    public function it_can_show_priority()
+    public function it_can_show_technician()
     {
-        $priority = Priority::factory()->create();
+        $technician = Technician::factory()->create();
 
-        $response = $this->getJson("/api/v1/priorities/{$priority->id}", [
+        $response = $this->getJson("/api/v1/technicians/{$technician->id}", [
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json'
         ]);
@@ -108,9 +106,8 @@ class PriorityApiTest extends TestCase
                         'type',
                         'attributes' => [
                             'name',
-                            'color',
-                            'description',
-                            'order_column',
+                            'phone',
+                            'email',
                             'createdAt',
                             'updatedAt'
                         ]
@@ -119,21 +116,21 @@ class PriorityApiTest extends TestCase
     }
 
     #[Test]
-    public function it_can_update_priority()
+    public function it_can_update_technician()
     {
-        $priority = Priority::factory()->create();
+        $technician = Technician::factory()->create();
 
         $updateData = [
             'data' => [
-                'type' => 'priorities',
-                'id' => (string) $priority->id,
+                'type' => 'technicians',
+                'id' => (string) $technician->id,
                 'attributes' => [
-                    'name' => 'Updated Priority Name'
+                    'name' => 'Updated Name'
                 ]
             ]
         ];
 
-        $response = $this->patchJson("/api/v1/priorities/{$priority->id}", $updateData, [
+        $response = $this->patchJson("/api/v1/technicians/{$technician->id}", $updateData, [
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json'
         ]);
@@ -145,44 +142,43 @@ class PriorityApiTest extends TestCase
                         'type',
                         'attributes' => [
                             'name',
-                            'color',
-                            'description',
-                            'order_column',
+                            'phone',
+                            'email',
                             'createdAt',
                             'updatedAt'
                         ]
                     ]
                 ]);
 
-        $this->assertDatabaseHas('priorities', [
-            'id' => $priority->id,
-            'name' => 'Updated Priority Name'
+        $this->assertDatabaseHas('technicians', [
+            'id' => $technician->id,
+            'name' => 'Updated Name'
         ]);
     }
 
     #[Test]
-    public function it_can_delete_priority()
+    public function it_can_delete_technician()
     {
-        $priority = Priority::factory()->create();
+        $technician = Technician::factory()->create();
 
-        $response = $this->deleteJson("/api/v1/priorities/{$priority->id}", [], [
+        $response = $this->deleteJson("/api/v1/technicians/{$technician->id}", [], [
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json'
         ]);
 
         $response->assertStatus(204);
 
-        $this->assertDatabaseMissing('priorities', [
-            'id' => $priority->id
+        $this->assertDatabaseMissing('technicians', [
+            'id' => $technician->id
         ]);
     }
 
     #[Test]
-    public function it_validates_priority_name_is_required()
+    public function it_validates_technician_name_is_required()
     {
-        $response = $this->postJson('/api/v1/priorities', [
+        $response = $this->postJson('/api/v1/technicians', [
             'data' => [
-                'type' => 'priorities',
+                'type' => 'technicians',
                 'attributes' => [
                     'name' => null
                 ]
@@ -209,15 +205,14 @@ class PriorityApiTest extends TestCase
     }
 
     #[Test]
-    public function it_validates_priority_name_is_unique()
+    public function it_validates_technician_email_format()
     {
-        $existingPriority = Priority::factory()->create(['name' => 'Existing Priority']);
-
-        $response = $this->postJson('/api/v1/priorities', [
+        $response = $this->postJson('/api/v1/technicians', [
             'data' => [
-                'type' => 'priorities',
+                'type' => 'technicians',
                 'attributes' => [
-                    'name' => 'Existing Priority'
+                    'name' => 'John Doe',
+                    'email' => 'invalid-email'
                 ]
             ]
         ], [
@@ -232,9 +227,43 @@ class PriorityApiTest extends TestCase
                 [
                     'status' => '422',
                     'title' => 'Unprocessable Entity',
-                    'detail' => 'The name has already been taken.',
+                    'detail' => 'The email field must be a valid email address.',
                     'source' => [
-                        'pointer' => '/data/attributes/name'
+                        'pointer' => '/data/attributes/email'
+                    ]
+                ]
+            ]
+        ]);
+    }
+
+    #[Test]
+    public function it_validates_technician_email_is_unique()
+    {
+        $existingTechnician = Technician::factory()->create(['email' => 'existing@example.com']);
+
+        $response = $this->postJson('/api/v1/technicians', [
+            'data' => [
+                'type' => 'technicians',
+                'attributes' => [
+                    'name' => 'John Doe',
+                    'email' => 'existing@example.com'
+                ]
+            ]
+        ], [
+            'Accept' => 'application/vnd.api+json',
+            'Content-Type' => 'application/vnd.api+json'
+        ]);
+
+        $response->assertStatus(422);
+
+        $response->assertJson([
+            'errors' => [
+                [
+                    'status' => '422',
+                    'title' => 'Unprocessable Entity',
+                    'detail' => 'The email has already been taken.',
+                    'source' => [
+                        'pointer' => '/data/attributes/email'
                     ]
                 ]
             ]

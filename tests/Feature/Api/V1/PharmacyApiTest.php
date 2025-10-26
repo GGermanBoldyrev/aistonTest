@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Api\V1;
 
-use App\Models\Technician;
+use App\Models\Pharmacy;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class TechnicianApiTest extends TestCase
+class PharmacyApiTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -21,11 +21,11 @@ class TechnicianApiTest extends TestCase
     }
 
     #[Test]
-    public function it_can_list_technicians()
+    public function it_can_list_pharmacies()
     {
-        Technician::factory()->count(3)->create();
+        Pharmacy::factory()->count(3)->create();
 
-        $response = $this->getJson('/api/v1/technicians', [
+        $response = $this->getJson('/api/v1/pharmacies', [
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json'
         ]);
@@ -37,9 +37,9 @@ class TechnicianApiTest extends TestCase
                             'id',
                             'type',
                             'attributes' => [
-                                'name',
-                                'phone',
-                                'email',
+                                'code',
+                                'address',
+                                'city',
                                 'createdAt',
                                 'updatedAt'
                             ]
@@ -49,20 +49,20 @@ class TechnicianApiTest extends TestCase
     }
 
     #[Test]
-    public function it_can_create_technician()
+    public function it_can_create_pharmacy()
     {
-        $technicianData = [
+        $pharmacyData = [
             'data' => [
-                'type' => 'technicians',
+                'type' => 'pharmacies',
                 'attributes' => [
-                    'name' => 'John Doe',
-                    'phone' => '+1234567890',
-                    'email' => 'john@example.com'
+                    'code' => 'PH-001',
+                    'address' => '123 Main Street',
+                    'city' => 'New York'
                 ]
             ]
         ];
 
-        $response = $this->postJson('/api/v1/technicians', $technicianData, [
+        $response = $this->postJson('/api/v1/pharmacies', $pharmacyData, [
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json'
         ]);
@@ -73,28 +73,28 @@ class TechnicianApiTest extends TestCase
                         'id',
                         'type',
                         'attributes' => [
-                            'name',
-                            'phone',
-                            'email',
+                            'code',
+                            'address',
+                            'city',
                             'createdAt',
                             'updatedAt'
                         ]
                     ]
                 ]);
 
-        $this->assertDatabaseHas('technicians', [
-            'name' => 'John Doe',
-            'phone' => '+1234567890',
-            'email' => 'john@example.com'
+        $this->assertDatabaseHas('pharmacies', [
+            'code' => 'PH-001',
+            'address' => '123 Main Street',
+            'city' => 'New York'
         ]);
     }
 
     #[Test]
-    public function it_can_show_technician()
+    public function it_can_show_pharmacy()
     {
-        $technician = Technician::factory()->create();
+        $pharmacy = Pharmacy::factory()->create();
 
-        $response = $this->getJson("/api/v1/technicians/{$technician->id}", [
+        $response = $this->getJson("/api/v1/pharmacies/{$pharmacy->id}", [
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json'
         ]);
@@ -105,9 +105,9 @@ class TechnicianApiTest extends TestCase
                         'id',
                         'type',
                         'attributes' => [
-                            'name',
-                            'phone',
-                            'email',
+                            'code',
+                            'address',
+                            'city',
                             'createdAt',
                             'updatedAt'
                         ]
@@ -116,21 +116,21 @@ class TechnicianApiTest extends TestCase
     }
 
     #[Test]
-    public function it_can_update_technician()
+    public function it_can_update_pharmacy()
     {
-        $technician = Technician::factory()->create();
+        $pharmacy = Pharmacy::factory()->create();
 
         $updateData = [
             'data' => [
-                'type' => 'technicians',
-                'id' => (string) $technician->id,
+                'type' => 'pharmacies',
+                'id' => (string) $pharmacy->id,
                 'attributes' => [
-                    'name' => 'Updated Name'
+                    'address' => 'Updated Address'
                 ]
             ]
         ];
 
-        $response = $this->patchJson("/api/v1/technicians/{$technician->id}", $updateData, [
+        $response = $this->patchJson("/api/v1/pharmacies/{$pharmacy->id}", $updateData, [
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json'
         ]);
@@ -141,46 +141,47 @@ class TechnicianApiTest extends TestCase
                         'id',
                         'type',
                         'attributes' => [
-                            'name',
-                            'phone',
-                            'email',
+                            'code',
+                            'address',
+                            'city',
                             'createdAt',
                             'updatedAt'
                         ]
                     ]
                 ]);
 
-        $this->assertDatabaseHas('technicians', [
-            'id' => $technician->id,
-            'name' => 'Updated Name'
+        $this->assertDatabaseHas('pharmacies', [
+            'id' => $pharmacy->id,
+            'address' => 'Updated Address'
         ]);
     }
 
     #[Test]
-    public function it_can_delete_technician()
+    public function it_can_delete_pharmacy()
     {
-        $technician = Technician::factory()->create();
+        $pharmacy = Pharmacy::factory()->create();
 
-        $response = $this->deleteJson("/api/v1/technicians/{$technician->id}", [], [
+        $response = $this->deleteJson("/api/v1/pharmacies/{$pharmacy->id}", [], [
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json'
         ]);
 
         $response->assertStatus(204);
 
-        $this->assertDatabaseMissing('technicians', [
-            'id' => $technician->id
+        $this->assertDatabaseMissing('pharmacies', [
+            'id' => $pharmacy->id
         ]);
     }
 
     #[Test]
-    public function it_validates_technician_name_is_required()
+    public function it_validates_pharmacy_code_is_required()
     {
-        $response = $this->postJson('/api/v1/technicians', [
+        $response = $this->postJson('/api/v1/pharmacies', [
             'data' => [
-                'type' => 'technicians',
+                'type' => 'pharmacies',
                 'attributes' => [
-                    'name' => null
+                    'code' => null,
+                    'address' => '123 Main Street'
                 ]
             ]
         ], [
@@ -195,9 +196,9 @@ class TechnicianApiTest extends TestCase
                 [
                     'status' => '422',
                     'title' => 'Unprocessable Entity',
-                    'detail' => 'The name field is required.',
+                    'detail' => 'The code field is required.',
                     'source' => [
-                        'pointer' => '/data/attributes/name'
+                        'pointer' => '/data/attributes/code'
                     ]
                 ]
             ]
@@ -205,14 +206,14 @@ class TechnicianApiTest extends TestCase
     }
 
     #[Test]
-    public function it_validates_technician_email_format()
+    public function it_validates_pharmacy_address_is_required()
     {
-        $response = $this->postJson('/api/v1/technicians', [
+        $response = $this->postJson('/api/v1/pharmacies', [
             'data' => [
-                'type' => 'technicians',
+                'type' => 'pharmacies',
                 'attributes' => [
-                    'name' => 'John Doe',
-                    'email' => 'invalid-email'
+                    'code' => 'PH-001',
+                    'address' => null
                 ]
             ]
         ], [
@@ -227,9 +228,9 @@ class TechnicianApiTest extends TestCase
                 [
                     'status' => '422',
                     'title' => 'Unprocessable Entity',
-                    'detail' => 'The email field must be a valid email address.',
+                    'detail' => 'The address field is required.',
                     'source' => [
-                        'pointer' => '/data/attributes/email'
+                        'pointer' => '/data/attributes/address'
                     ]
                 ]
             ]
@@ -237,16 +238,16 @@ class TechnicianApiTest extends TestCase
     }
 
     #[Test]
-    public function it_validates_technician_email_is_unique()
+    public function it_validates_pharmacy_code_is_unique()
     {
-        $existingTechnician = Technician::factory()->create(['email' => 'existing@example.com']);
+        $existingPharmacy = Pharmacy::factory()->create(['code' => 'PH-EXISTING']);
 
-        $response = $this->postJson('/api/v1/technicians', [
+        $response = $this->postJson('/api/v1/pharmacies', [
             'data' => [
-                'type' => 'technicians',
+                'type' => 'pharmacies',
                 'attributes' => [
-                    'name' => 'John Doe',
-                    'email' => 'existing@example.com'
+                    'code' => 'PH-EXISTING',
+                    'address' => '123 Main Street'
                 ]
             ]
         ], [
@@ -261,9 +262,9 @@ class TechnicianApiTest extends TestCase
                 [
                     'status' => '422',
                     'title' => 'Unprocessable Entity',
-                    'detail' => 'The email has already been taken.',
+                    'detail' => 'The code has already been taken.',
                     'source' => [
-                        'pointer' => '/data/attributes/email'
+                        'pointer' => '/data/attributes/code'
                     ]
                 ]
             ]
