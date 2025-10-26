@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class CategoryHint extends Model
 {
     use HasFactory;
-    protected $fillable = ['category_id', 'text', 'hint_type'];
+    protected $fillable = ['category_id', 'text', 'hint_type', 'order_column'];
 
     public function category(): BelongsTo
     {

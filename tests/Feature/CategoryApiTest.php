@@ -16,7 +16,6 @@ class CategoryApiTest extends TestCase
     {
         parent::setUp();
 
-        // Создаем пользователя и авторизуемся
         $user = User::factory()->create();
         $this->actingAs($user);
     }
@@ -154,7 +153,7 @@ class CategoryApiTest extends TestCase
             'data' => [
                 'type' => 'categories',
                 'attributes' => [
-                    'name' => null // null значение
+                    'name' => null
                 ]
             ]
         ], [
@@ -164,7 +163,6 @@ class CategoryApiTest extends TestCase
 
         $response->assertStatus(422);
 
-        // Проверяем JSON:API формат ошибок
         $response->assertJson([
             'errors' => [
                 [
