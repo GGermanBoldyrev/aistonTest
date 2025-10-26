@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Status>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Priority>
  */
-class StatusFactory extends Factory
+class PriorityFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,6 +19,7 @@ class StatusFactory extends Factory
         return [
             'name' => $this->faker->unique()->word(),
             'color' => $this->faker->hexColor(),
+            'description' => $this->faker->sentence(),
         ];
     }
 }
