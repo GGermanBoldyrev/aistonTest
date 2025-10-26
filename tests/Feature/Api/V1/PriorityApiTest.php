@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Api\V1;
 
-use App\Models\Category;
+use App\Models\Priority;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class CategoryApiTest extends TestCase
+class PriorityApiTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -21,11 +21,11 @@ class CategoryApiTest extends TestCase
     }
 
     #[Test]
-    public function it_can_list_categories()
+    public function it_can_list_priorities()
     {
-        Category::factory()->count(3)->create();
+        Priority::factory()->count(3)->create();
 
-        $response = $this->getJson('/api/v1/categories', [
+        $response = $this->getJson('/api/v1/priorities', [
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json'
         ]);
@@ -38,6 +38,9 @@ class CategoryApiTest extends TestCase
                             'type',
                             'attributes' => [
                                 'name',
+                                'color',
+                                'description',
+                                'order_column',
                                 'createdAt',
                                 'updatedAt'
                             ]
@@ -47,18 +50,20 @@ class CategoryApiTest extends TestCase
     }
 
     #[Test]
-    public function it_can_create_category()
+    public function it_can_create_priority()
     {
-        $categoryData = [
+        $priorityData = [
             'data' => [
-                'type' => 'categories',
+                'type' => 'priorities',
                 'attributes' => [
-                    'name' => 'Test Category'
+                    'name' => 'High Priority',
+                    'color' => '#FF0000',
+                    'description' => 'Very important'
                 ]
             ]
         ];
 
-        $response = $this->postJson('/api/v1/categories', $categoryData, [
+        $response = $this->postJson('/api/v1/priorities', $priorityData, [
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json'
         ]);
@@ -68,21 +73,30 @@ class CategoryApiTest extends TestCase
                     'data' => [
                         'id',
                         'type',
-                        'attributes'
+                        'attributes' => [
+                            'name',
+                            'color',
+                            'description',
+                            'order_column',
+                            'createdAt',
+                            'updatedAt'
+                        ]
                     ]
                 ]);
 
-        $this->assertDatabaseHas('categories', [
-            'name' => 'Test Category'
+        $this->assertDatabaseHas('priorities', [
+            'name' => 'High Priority',
+            'color' => '#FF0000',
+            'description' => 'Very important'
         ]);
     }
 
     #[Test]
-    public function it_can_show_category()
+    public function it_can_show_priority()
     {
-        $category = Category::factory()->create();
+        $priority = Priority::factory()->create();
 
-        $response = $this->getJson("/api/v1/categories/{$category->id}", [
+        $response = $this->getJson("/api/v1/priorities/{$priority->id}", [
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json'
         ]);
@@ -94,6 +108,9 @@ class CategoryApiTest extends TestCase
                         'type',
                         'attributes' => [
                             'name',
+                            'color',
+                            'description',
+                            'order_column',
                             'createdAt',
                             'updatedAt'
                         ]
@@ -102,56 +119,70 @@ class CategoryApiTest extends TestCase
     }
 
     #[Test]
-    public function it_can_update_category()
+    public function it_can_update_priority()
     {
-        $category = Category::factory()->create();
+        $priority = Priority::factory()->create();
 
         $updateData = [
             'data' => [
-                'type' => 'categories',
-                'id' => (string) $category->id,
+                'type' => 'priorities',
+                'id' => (string) $priority->id,
                 'attributes' => [
-                    'name' => 'Updated Category Name'
+                    'name' => 'Updated Priority Name'
                 ]
             ]
         ];
 
-        $response = $this->patchJson("/api/v1/categories/{$category->id}", $updateData, [
+        $response = $this->patchJson("/api/v1/priorities/{$priority->id}", $updateData, [
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json'
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+                ->assertJsonStructure([
+                    'data' => [
+                        'id',
+                        'type',
+                        'attributes' => [
+                            'name',
+                            'color',
+                            'description',
+                            'order_column',
+                            'createdAt',
+                            'updatedAt'
+                        ]
+                    ]
+                ]);
 
-        $this->assertDatabaseHas('categories', [
-            'id' => $category->id,
-            'name' => 'Updated Category Name'
+        $this->assertDatabaseHas('priorities', [
+            'id' => $priority->id,
+            'name' => 'Updated Priority Name'
         ]);
     }
 
     #[Test]
-    public function it_can_delete_category()
+    public function it_can_delete_priority()
     {
-        $category = Category::factory()->create();
+        $priority = Priority::factory()->create();
 
-        $response = $this->deleteJson("/api/v1/categories/{$category->id}", [], [
+        $response = $this->deleteJson("/api/v1/priorities/{$priority->id}", [], [
             'Accept' => 'application/vnd.api+json',
             'Content-Type' => 'application/vnd.api+json'
         ]);
 
         $response->assertStatus(204);
 
-        $this->assertDatabaseMissing('categories', [
-            'id' => $category->id
+        $this->assertDatabaseMissing('priorities', [
+            'id' => $priority->id
         ]);
     }
 
     #[Test]
-    public function it_validates_category_name_is_required()
+    public function it_validates_priority_name_is_required()
     {
-        $response = $this->postJson('/api/v1/categories', [
+        $response = $this->postJson('/api/v1/priorities', [
             'data' => [
-                'type' => 'categories',
+                'type' => 'priorities',
                 'attributes' => [
                     'name' => null
                 ]
@@ -178,15 +209,15 @@ class CategoryApiTest extends TestCase
     }
 
     #[Test]
-    public function it_validates_category_name_is_unique()
+    public function it_validates_priority_name_is_unique()
     {
-        $existingCategory = Category::factory()->create(['name' => 'Existing Category']);
+        $existingPriority = Priority::factory()->create(['name' => 'Existing Priority']);
 
-        $response = $this->postJson('/api/v1/categories', [
+        $response = $this->postJson('/api/v1/priorities', [
             'data' => [
-                'type' => 'categories',
+                'type' => 'priorities',
                 'attributes' => [
-                    'name' => 'Existing Category'
+                    'name' => 'Existing Priority'
                 ]
             ]
         ], [
@@ -210,3 +241,4 @@ class CategoryApiTest extends TestCase
         ]);
     }
 }
+

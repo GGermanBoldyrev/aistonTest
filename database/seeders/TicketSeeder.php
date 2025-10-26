@@ -14,6 +14,6 @@ class TicketSeeder extends Seeder
     public function run(): void
     {
         Ticket::query()->delete();
-        Ticket::factory(20)->create();
+        Ticket::factory(20)->forSeeder()->create();
     }
 }

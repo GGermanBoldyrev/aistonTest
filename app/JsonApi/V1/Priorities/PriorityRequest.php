@@ -22,6 +22,7 @@ class PriorityRequest extends ResourceRequest
             return [
                 'name' => ['required', 'string', 'max:255', $uniqueName],
                 'color' => ['nullable', 'string', 'max:255'],
+                'description' => ['nullable', 'string', 'max:255'],
                 'order' => ['sometimes', 'integer', 'min:0'],
             ];
         }
@@ -29,6 +30,7 @@ class PriorityRequest extends ResourceRequest
         return [
             'name' => ['sometimes', 'required', 'string', 'max:255', $uniqueName],
             'color' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'description' => ['sometimes', 'nullable', 'string', 'max:255'],
             'order' => ['sometimes', 'integer', 'min:0'],
         ];
     }
