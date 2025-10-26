@@ -34,17 +34,30 @@ class TicketFactory extends Factory
 
             // Обязательные связи
             'pharmacy_id' => Pharmacy::factory(),
-            'priority_id' => Priority::inRandomOrder()->first()->id,
-            'category_id' => Category::inRandomOrder()->first()->id,
-            'status_id' => Status::inRandomOrder()->first()->id,
+            'priority_id' => Priority::factory(),
+            'category_id' => Category::factory(),
+            'status_id' => Status::factory(),
 
             // Необязательные поля
-            'technician_id' => Technician::inRandomOrder()->first()->id,
+            'technician_id' => null,
             'reacted_at' => null,
             'resolved_at' => null,
 
             'created_at' => $createdAt,
             'updated_at' => $createdAt,
         ];
+    }
+
+    /**
+     * Для сидера - использует существующие сущности
+     */
+    public function forSeeder(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'priority_id' => Priority::inRandomOrder()->first()?->id ?? Priority::factory(),
+            'category_id' => Category::inRandomOrder()->first()?->id ?? Category::factory(),
+            'status_id' => Status::inRandomOrder()->first()?->id ?? Status::factory(),
+            'technician_id' => Technician::inRandomOrder()->first()?->id,
+        ]);
     }
 }
